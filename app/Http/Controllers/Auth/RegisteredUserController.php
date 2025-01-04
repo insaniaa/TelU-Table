@@ -174,7 +174,7 @@ class RegisteredUserController extends Controller
                         'password' => Hash::make(Str::random(12)),
                     ])->assignRole('Student');
 
-                    $student->id_user = $user->id;
+                    $student->id_user = $user->id_user;
                     $student->save();
                 }
 
@@ -188,7 +188,6 @@ class RegisteredUserController extends Controller
             DB::commit();
             return redirect()->route('register.successed')->with('success', "Registrasi Akun Berhasil!");
         } catch (Exception $e) {
-            dd($e);
             DB::rollBack();
             session()->flash('role', $request->role);
             return redirect()->back()->withErrors($e->getMessage())->withInput()->with('error', 'Registrasi gagal mohon coba lagi');
