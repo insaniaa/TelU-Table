@@ -22,7 +22,7 @@ class UpdateLecturerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nip' => 'required|max:20|unique:lecturers,nip,' . $this->route('lecturer'),
+            'nip' => 'required|max:20|unique:lecturers,nip,' . $this->lecturer->nim . ',nip',
             'lecturer_name' => 'required|max:255',
             'lecturer_code' => 'required|max:20',
         ];
