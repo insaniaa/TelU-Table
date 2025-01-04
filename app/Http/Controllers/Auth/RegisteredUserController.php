@@ -124,6 +124,7 @@ class RegisteredUserController extends Controller
 
                 dispatch(new SendMailJob($request->email_lecturer, new VerifyEmail($data)));
             } else if ($request->role == 'student') {
+
                 $student = Student::where('nim', $request->nim)->first();
                 if (!$student) {
                     DB::rollback();
@@ -165,7 +166,7 @@ class RegisteredUserController extends Controller
                     'created_at' => now()->addMinutes(5),
                 ]);
 
-                $user = User::where('email', $student->student_email)->first();
+                $user = User::where('email', $request->email_student)->first();
                 if (!$user) {
                     $user = User::create([
                         'name' => $student->student_name,
@@ -181,13 +182,13 @@ class RegisteredUserController extends Controller
                 $data['name'] = $student->student_name;
                 $data['message'] = 'Aktivasi akun anda berhasil! Silakan atur password anda';
 
-
-                dispatch(new SendMailJob($student->student_email, new VerifyEmail($data)));
+                dispatch(new SendMailJob($request->email_student, new VerifyEmail($data)));
             }
 
             DB::commit();
             return redirect()->route('register.successed')->with('success', "Registrasi Akun Berhasil!");
         } catch (Exception $e) {
+            dd($e);
             DB::rollBack();
             session()->flash('role', $request->role);
             return redirect()->back()->withErrors($e->getMessage())->withInput()->with('error', 'Registrasi gagal mohon coba lagi');
