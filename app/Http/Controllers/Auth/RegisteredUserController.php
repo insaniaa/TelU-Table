@@ -123,7 +123,7 @@ class RegisteredUserController extends Controller
                 $data['message'] = 'Aktivasi akun anda berhasil! Silakan atur password anda';
 
                 dispatch(new SendMailJob($request->email_lecturer, new VerifyEmail($data)));
-            } else if ($request->roleregister == 'student') {
+            } else if ($request->role == 'student') {
                 $student = Student::where('nim', $request->nim)->first();
                 if (!$student) {
                     DB::rollback();
@@ -181,7 +181,7 @@ class RegisteredUserController extends Controller
                 $data['name'] = $student->student_name;
                 $data['message'] = 'Aktivasi akun anda berhasil! Silakan atur password anda';
 
-                dd($request->student_email);
+
                 dispatch(new SendMailJob($student->student_email, new VerifyEmail($data)));
             }
 
