@@ -28,7 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if ($request->user()->hasRole('Super Admin')) {
+            return redirect()->route('admin.master_data.schedule.index');
+        } elseif ($request->user()->hasRole('Lecturer')) {
+            return redirect()->route('lecturer.task.tasks_today');
+        } elseif ($request->user()->hasRole('Student')) {
+            return redirect()->route('student.tasks_today');
+        }
     }
 
     /**

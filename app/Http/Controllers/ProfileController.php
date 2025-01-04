@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,16 +27,38 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        try {
+        $user = $request->user();
+        $data = $request->all();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists
+            if ($user->avatar && file_exists(storage_path('app/public/' . $user->avatar))) {
+                unlink(storage_path('app/public/' . $user->avatar));
+            }
+
+            // Store the new avatar and get the file path
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $avatarPath;  // Add the new avatar path to the data array
         }
 
-        $request->user()->save();
+        // Update the user's profile
+        $user->fill($data);
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // Reset email verification if the email has changed
+        if ($request->user()->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+        } catch(Exception $e) {
+            dd($e);
+        }
+
+        return Redirect::route('profile.edit')->with('success', 'profile-updated');
     }
+
 
     /**
      * Delete the user's account.
