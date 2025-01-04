@@ -181,14 +181,15 @@ class RegisteredUserController extends Controller
                 $data['name'] = $student->student_name;
                 $data['message'] = 'Aktivasi akun anda berhasil! Silakan atur password anda';
 
+                dd($request->student_email);
                 dispatch(new SendMailJob($student->student_email, new VerifyEmail($data)));
             }
 
             DB::commit();
             return redirect()->route('register.successed')->with('success', "Registrasi Akun Berhasil!");
         } catch (Exception $e) {
-            dd($e);
             DB::rollBack();
+            session()->flash('role', $request->role);
             return redirect()->back()->withErrors($e->getMessage())->withInput()->with('error', 'Registrasi gagal mohon coba lagi');
         }
     }
