@@ -45,13 +45,6 @@
                     data: 'task_file',
                     name: 'task_file',
                     title: 'Lampiran',
-                    render: function(data, type, row) {
-                        // If task_file exists, return a link to the file
-                        if (data) {
-                            return `<a href="{{ Storage::url('${data}') }}" target="_blank">Download</a>`;
-                        }
-                        return 'No File';
-                    }
                 },
                 {
                     data: 'actions',

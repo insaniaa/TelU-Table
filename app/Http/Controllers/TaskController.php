@@ -265,7 +265,10 @@ class TaskController extends Controller
     public function tasksToday(Request $request)
     {
         $today = now()->format('Y-m-d');
-        $tasks = Task::with(['course', 'studentClass', 'lecturer'])->whereDate('task_deadline', $today)->latest();
+        $tasks = Task::with(['course', 'studentClass', 'lecturer'])
+        ->whereDate('task_deadline', $today)
+        ->where('tast_status', 1)
+        ->latest();
 
         $user = auth()->user();
         $title = '';
