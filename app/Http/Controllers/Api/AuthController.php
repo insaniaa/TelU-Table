@@ -99,8 +99,8 @@ class AuthController extends Controller
                         'password' => Hash::make(Str::random(12)),
                     ])->assignRole('Lecturer');
 
-                    // $lecturer->id_user = $user->id_user;
-                    // $lecturer->save();
+                    $lecturer->id_user = $user->id_user;
+                    $lecturer->save();
                 } else {
                     $user->update(['email' => $request->email_lecturer]);
                 }
@@ -160,8 +160,8 @@ class AuthController extends Controller
                         'password' => Hash::make(Str::random(12)),
                     ])->assignRole('Student');
 
-                    // $student->id_user = $user->id;
-                    // $student->save();
+                    $student->id_user = $user->id;
+                    $student->save();
                 }
 
                 $data['url'] = route('password.reset', ['token' => $code]);

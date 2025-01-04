@@ -27,7 +27,6 @@ class UpdateTaskRequest extends FormRequest
             'task_description' => 'nullable|string',
             'course_code' => 'required|exists:courses,course_code',
             'id_student_class' => 'required|exists:student_classes,id_student_class',
-            'nip' => 'required|exists:lecturers,nip',
             'task_deadline' => 'required|date',
             'task_file' => 'nullable|file|mimes:pdf,doc,docx,xlsx,ppt,pptx', // Menambahkan validasi untuk task_file
             'task_module' => 'nullable|file|mimes:pdf,doc,docx,xlsx,ppt,pptx', // Menambahkan validasi untuk task_module

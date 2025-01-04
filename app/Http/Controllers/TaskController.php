@@ -100,7 +100,6 @@ class TaskController extends Controller
                 'courses' => $courses,
                 'studentClasses' => $studentClasses,
                 'method' => 'POST',
-                'lecturers' => Lecturer::latest()->where('lecturer_status', 1)->get(),
                 'route' => route($this->routePrefix . 'store'),
                 'button' => 'Buat Tugas',
                 'routePrefix' => $this->routePrefix,
@@ -132,6 +131,7 @@ class TaskController extends Controller
                 $data['task_module'] = $request->file('task_module')->store('task_modules');
             }
 
+            $data['nip'] = auth()->user()->lecturer->nip;
             // Membuat entri task baru
             Task::create($data);
 
@@ -204,6 +204,7 @@ class TaskController extends Controller
                 $data['task_module'] = $request->file('task_module')->store('task_modules');
             }
 
+            $data['nip'] = auth()->user()->lecturer->nip;
             // Update data task dengan data yang baru
             $task->update($data);
 
@@ -257,7 +258,6 @@ class TaskController extends Controller
             return redirect()->route($this->routePrefix . $this->viewIndex)->with('error', "Gagal Menghapus Tugas!");
         }
     }
-
 
     /**
      * Display tasks for today.

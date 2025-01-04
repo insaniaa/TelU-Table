@@ -67,7 +67,7 @@
             </div>
 
             <!-- Dosen Pengajar -->
-            <div class="mb-3 form-group">
+            {{-- <div class="mb-3 form-group">
                 <label for="nip">Dosen Pengajar</label>
                 <select class="form-control" id="nip" name="nip">
                     @foreach($lecturers as $lecturer)
@@ -81,7 +81,7 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div>
+            </div> --}}
 
             <!-- Tenggat Waktu -->
             <div class="mb-3 form-group">
