@@ -131,7 +131,7 @@ class RegisteredUserController extends Controller
                     return redirect()->back()
                     ->withErrors(['nip' => 'NIP tidak ditemukan.'])
                     ->withInput()
-                    ->with('error', 'NIP tidak ditemukan.');
+                    ->with('error', 'NIM tidak ditemukan.');
                 }
 
                 if ($student?->user->email_verified_at ?? false) {
@@ -189,7 +189,7 @@ class RegisteredUserController extends Controller
         } catch (Exception $e) {
 
             DB::rollBack();
-            return redirect()->back()->withErrors($e)->withInput()->with('error', 'Registrasi gagal mohon coba lagi');
+            return redirect()->back()->withErrors($e->getMessage())->withInput()->with('error', 'Registrasi gagal mohon coba lagi');
         }
     }
 }
