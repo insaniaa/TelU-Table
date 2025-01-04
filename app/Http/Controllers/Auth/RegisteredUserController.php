@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
             if ($request->role == 'lecturer') {
                 $validate['nip'] = 'required|string|exists:lecturers,nip';
             } else if ($request->role == 'student') {
-                $validate['nim'] = 'required|string|exists:student,nim';
+                $validate['nim'] = 'required|string|exists:students,nim';
             }
 
             $validator = Validator::make($request->all(), $validate, [
@@ -187,7 +187,7 @@ class RegisteredUserController extends Controller
             DB::commit();
             return redirect()->route('register.successed')->with('success', "Registrasi Akun Berhasil!");
         } catch (Exception $e) {
-
+            dd($e);
             DB::rollBack();
             return redirect()->back()->withErrors($e->getMessage())->withInput()->with('error', 'Registrasi gagal mohon coba lagi');
         }
