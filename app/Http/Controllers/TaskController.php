@@ -267,7 +267,7 @@ class TaskController extends Controller
         $today = now()->format('Y-m-d');
         $tasks = Task::with(['course', 'studentClass', 'lecturer'])
         ->whereDate('task_deadline', $today)
-        ->where('tast_status', 1)
+        ->where('task_status', 1)
         ->latest();
 
         $user = auth()->user();
